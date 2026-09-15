@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Neon Drift — Agus VR</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#04060C;overflow:hidden;touch-action:none;
+    font-family:'Segoe UI',Roboto,sans-serif;-webkit-user-select:none;user-select:none}
+  #c{display:block;width:100vw;height:100vh}
+  #hud{position:fixed;top:12px;left:0;right:0;display:flex;justify-content:space-between;
+    padding:0 18px;color:#9BEFFF;font-size:14px;letter-spacing:2px;text-shadow:0 0 8px #4DE8FF;pointer-events:none}
+  #msg{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#F2F7FF;text-align:center;pointer-events:none;text-shadow:0 0 18px rgba(77,232,255,.6)}
+  #msg h1{font-size:34px;margin:0 0 6px;letter-spacing:8px;color:#4DE8FF}
+  #msg p{margin:4px;color:#A9B8D8;font-size:13px;letter-spacing:1px}
+  .hide{opacity:0;transition:opacity .3s}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><span id="score">0</span><span id="best">BEST 0</span></div>
+<div id="msg"><h1>NEON DRIFT</h1><p>toque nos lados · setas ← → · desvie dos pilares</p><p style="color:#4DE8FF">TOQUE PARA INICIAR</p></div>
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById('c'),ctx=cv.getContext('2d');
+var msg=document.getElementById('msg'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best');
+var W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2);
+function resize(){W=window.innerWidth;H=window.innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+window.addEventListener('resize',resize);resize();
+var LANES=5,lane=2,state=0,score=0,best=+(localStorage.getItem('nd_best')||0),speed=4,spawnT=0,obstacles=[],parts=[],t=0;
+bestEl.textContent='BEST '+best;
+function laneX(i){var m=W*0.12,uw=(W-m*2)/LANES;return m+uw*i+uw/2;}
+function reset(){score=0;speed=4;obstacles=[];parts=[];spawnT=0;lane=2;}
+function spawn(){var l=Math.floor(Math.random()*LANES);var w=Math.min(46,W*0.1);
+  obstacles.push({x:laneX(l),y:-90,w:w,h:70+Math.random()*90,hue:Math.random()<.25?300:190});}
+function move(d){lane=Math.max(0,Math.min(LANES-1,lane+d));
+  for(var i=0;i<8;i++)parts.push({x:laneX(lane),y:H-80,vx:(Math.random()-.5)*4,vy:Math.random()*3,life:1,hue:190});}
+function loop(){
+  t+=1;ctx.fillStyle='rgba(4,6,12,.35)';ctx.fillRect(0,0,W,H);
+  // grid floor
+  ctx.strokeStyle='rgba(77,232,255,.07)';ctx.lineWidth=1;
+  for(var g=0;g<6;g++){var y=(t*speed*.7+g*(H/6))%H;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  var px=laneX(lane),py=H-70;
+  if(state===1){
+    spawnT-=1;if(spawnT<=0){spawn();spawnT=Math.max(26,70-score/8);}
+    speed=4+Math.min(6,score/90);
+    for(var i=obstacles.length-1;i>=0;i--){var o=obstacles[i];o.y+=speed;
+      if(Math.abs(o.x-px)<(o.w/2+16)&&py<o.y+o.h&&py>o.y-30){die();}
+      if(o.y>H+120){obstacles.splice(i,1);score+=1;scoreEl.textContent=score;}}
+  }
+  // obstacles
+  for(var j=0;j<obstacles.length;j++){var ob=obstacles[j];
+    ctx.strokeStyle='hsla('+ob.hue+',100%,65%,.9)';ctx.shadowColor='hsla('+ob.hue+',100%,60%,.8)';ctx.shadowBlur=14;ctx.lineWidth=2;
+    ctx.strokeRect(ob.x-ob.w/2,ob.y,ob.w,ob.h);ctx.shadowBlur=0;
+    ctx.fillStyle='hsla('+ob.hue+',100%,60%,.08)';ctx.fillRect(ob.x-ob.w/2,ob.y,ob.w,ob.h);}
+  // particles
+  for(var k=parts.length-1;k>=0;k--){var p=parts[k];p.x+=p.vx;p.y+=p.vy;p.life-=.04;
+    if(p.life<=0){parts.splice(k,1);continue;}
+    ctx.fillStyle='hsla('+p.hue+',100%,70%,'+p.life+')';ctx.fillRect(p.x-2,p.y-2,4,4);}
+  // ship
+  ctx.save();ctx.translate(px,py);
+  ctx.strokeStyle='#4DE8FF';ctx.shadowColor='#4DE8FF';ctx.shadowBlur=18;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.moveTo(0,-22);ctx.lineTo(15,14);ctx.lineTo(0,7);ctx.lineTo(-15,14);ctx.closePath();ctx.stroke();
+  ctx.fillStyle='rgba(77,232,255,.15)';ctx.fill();
+  ctx.restore();ctx.shadowBlur=0;
+  requestAnimationFrame(loop);
+}
+function start(){if(state!==1){reset();state=1;msg.classList.add('hide');}}
+function die(){state=2;if(score>best){best=score;localStorage.setItem('nd_best',best);bestEl.textContent='BEST '+best;}
+  for(var i=0;i<40;i++)parts.push({x:laneX(lane),y:H-70,vx:(Math.random()-.5)*10,vy:(Math.random()-.5)*10,life:1,hue:300});
+  msg.innerHTML='<h1>FIM</h1><p>pontuação '+score+'</p><p style="color:#4DE8FF">TOQUE PARA REINICIAR</p>';msg.classList.remove('hide');}
+function input(x){if(state!==1){start();return;}if(x<W/2)move(-1);else move(1);}
+cv.addEventListener('touchstart',function(e){e.preventDefault();input(e.touches[0].clientX);},{passive:false});
+cv.addEventListener('mousedown',function(e){input(e.clientX);});
+window.addEventListener('keydown',function(e){if(state!==1){start();return;}
+  if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1);});
+document.addEventListener('visibilitychange',function(){if(document.hidden&&state===1)state=3;});
+cv.addEventListener('touchstart',function(){if(state===3)start();},{passive:true});
+loop();
+})();
+</script>
+</body>
+</html>

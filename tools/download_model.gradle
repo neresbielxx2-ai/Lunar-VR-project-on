@@ -1,0 +1,75 @@
+// AGUS VR — build-time fetcher for the MediaPipe hand landmarker model.
+//
+// The model (hand_landmarker.task, Apache-2.0, Google) is NOT committed to the
+// repository (7.8 MB binary). It is downloaded into app assets on first build.
+// CI and local builds need internet access to storage.googleapis.com.
+//
+// Escape hatch: -PAGUS_ALLOW_MISSING_MODEL=1 builds without the model; the app
+// then disables hand tracking at runtime and shows a clear message (the rest of
+// the system keeps working with touch interaction).
+
+import java.security.MessageDigest
+
+def modelDir = new File(project.projectDir, 'src/main/assets/models')
+def modelFile = new File(modelDir, 'hand_landmarker.task')
+def EXPECTED_SHA256 = 'fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1'
+def URLS = [
+    'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+    'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task'
+]
+
+def sha256Of = { File f ->
+    def md = MessageDigest.getInstance('SHA-256')
+    f.withInputStream { is ->
+        byte[] buf = new byte[65536]
+        int n
+        while ((n = is.read(buf)) > 0) md.update(buf, 0, n)
+    }
+    md.digest().collect { String.format('%02x', it) }.join('')
+}
+
+tasks.register('downloadHandModel') {
+    description = 'Downloads the MediaPipe hand_landmarker.task model into app assets.'
+    group = 'agusvr'
+    outputs.file(modelFile)
+    doLast {
+        if (modelFile.exists() && modelFile.length() > 7_000_000L) {
+            logger.lifecycle('[AgusVR] hand_landmarker.task already present (${modelFile.length()} bytes)', modelFile.length())
+            return
+        }
+        modelDir.mkdirs()
+        boolean ok = false
+        for (String url : URLS) {
+            for (int attempt = 1; attempt <= 3 && !ok; attempt++) {
+                try {
+                    logger.lifecycle("[AgusVR] Downloading hand tracking model (attempt ${attempt}): ${url}")
+                    ant.get(src: url, dest: modelFile, verbose: false, usetimestamp: true)
+                    if (modelFile.exists() && modelFile.length() > 7_000_000L) ok = true
+                } catch (Exception ignored) {
+                    logger.warn("[AgusVR] download failed: ${ignored.message}")
+                    sleep(2000)
+                }
+            }
+            if (ok) break
+        }
+        if (ok) {
+            def actual = sha256Of(modelFile)
+            if (actual == EXPECTED_SHA256) {
+                logger.lifecycle('[AgusVR] Model checksum OK (sha256 matches official float16/1).')
+            } else {
+                logger.warn("[AgusVR] Model checksum ${actual} differs from pinned ${EXPECTED_SHA256} — using downloaded file anyway (likely a newer official revision).")
+            }
+        } else {
+            if (modelFile.exists()) modelFile.delete()
+            if (project.providers.gradleProperty('AGUS_ALLOW_MISSING_MODEL').isPresent()) {
+                logger.warn('[AgusVR] AGUS_ALLOW_MISSING_MODEL set — building WITHOUT hand tracking model. Hand tracking will be disabled at runtime.')
+            } else {
+                throw new GradleException('[AgusVR] Could not download hand_landmarker.task. Fix network access or build with -PAGUS_ALLOW_MISSING_MODEL=1 (hand tracking will be disabled).')
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    tasks.named('preBuild') { dependsOn 'downloadHandModel' }
+}

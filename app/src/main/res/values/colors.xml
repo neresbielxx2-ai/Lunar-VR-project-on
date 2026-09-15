@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AGUS VR identity: deep space dark + electric cyan + violet -->
+    <color name="agus_void">#FF04060C</color>
+    <color name="agus_deep">#FF070B16</color>
+    <color name="agus_panel">#E60B1120</color>
+    <color name="agus_panel_solid">#FF0B1120</color>
+    <color name="agus_panel_light">#FF121A2E</color>
+    <color name="agus_glass_border">#337DE7FF</color>
+    <color name="agus_cyan">#FF4DE8FF</color>
+    <color name="agus_cyan_dim">#804DE8FF</color>
+    <color name="agus_violet">#FF9D6BFF</color>
+    <color name="agus_violet_dim">#669D6BFF</color>
+    <color name="agus_magenta">#FFFF5EC7</color>
+    <color name="agus_mint">#FF5EFFB1</color>
+    <color name="agus_amber">#FFFFC24D</color>
+    <color name="agus_red">#FFFF5E7A</color>
+    <color name="agus_text">#FFF2F7FF</color>
+    <color name="agus_text_dim">#B3A9B8D8</color>
+    <color name="agus_text_faint">#668FA3C8</color>
+    <color name="agus_line">#2288A8FF</color>
+    <color name="agus_shadow">#66000000</color>
+    <color name="agus_translucent_scrim">#9904060C</color>
+    <color name="agus_launcher_bg">#FF05070F</color>
+</resources>

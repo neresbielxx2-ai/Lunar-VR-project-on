@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Agus" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_app</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="27">shortEdges</item>
+        <item name="android:colorAccent">@color/agus_cyan</item>
+        <item name="android:textColorPrimary">@color/agus_text</item>
+        <item name="android:textColorSecondary">@color/agus_text_dim</item>
+        <item name="android:textColorHint">@color/agus_text_faint</item>
+        <item name="android:dialogTheme">@style/Theme.Agus.Dialog</item>
+        <item name="dialogTheme">@style/Theme.Agus.Dialog</item>
+    </style>
+
+    <style name="Theme.Agus.Splash" parent="Theme.Agus">
+        <item name="android:windowBackground">@color/agus_void</item>
+    </style>
+
+    <style name="Theme.Agus.VR" parent="Theme.Agus">
+        <item name="android:windowBackground">@color/agus_void</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+
+    <style name="Theme.Agus.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
+        <item name="android:backgroundDimAmount">0.65</item>
+        <item name="android:textColorPrimary">@color/agus_text</item>
+        <item name="android:textColorSecondary">@color/agus_text_dim</item>
+        <item name="android:colorAccent">@color/agus_cyan</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+</resources>

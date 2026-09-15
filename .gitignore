@@ -1,0 +1,22 @@
+# Gradle
+.gradle/
+build/
+local.properties
+
+# IDE
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+
+# NDK/obj
+obj/
+
+# MediaPipe model — downloaded at build time by tools/download_model.gradle
+app/src/main/assets/models/*.task
+
+# Keystore backups (the demo keystore itself IS committed on purpose)
+*.jks
+*.p12.bak

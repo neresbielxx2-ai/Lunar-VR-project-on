@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Cube Storm — Agus VR</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#04060C;overflow:hidden;touch-action:none;
+    font-family:'Segoe UI',Roboto,sans-serif;-webkit-user-select:none;user-select:none}
+  #c{display:block;width:100vw;height:100vh}
+  #hud{position:fixed;top:12px;left:0;right:0;display:flex;justify-content:space-between;padding:0 18px;
+    color:#C8B6FF;font-size:14px;letter-spacing:2px;text-shadow:0 0 8px #9D6BFF;pointer-events:none}
+  #msg{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#F2F7FF;text-align:center;pointer-events:none;text-shadow:0 0 18px rgba(157,107,255,.55)}
+  #msg h1{font-size:32px;margin:0 0 6px;letter-spacing:7px;color:#9D6BFF}
+  #msg p{margin:4px;color:#A9B8D8;font-size:13px;letter-spacing:1px}
+  .hide{opacity:0;transition:opacity .3s}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><span id="score">0</span><span id="best">BEST 0</span></div>
+<div id="msg"><h1>CUBE STORM</h1><p>arraste para voar · desvie dos cubos · colete esferas</p><p style="color:#9D6BFF">TOQUE PARA INICIAR</p></div>
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById('c'),ctx=cv.getContext('2d');
+var msg=document.getElementById('msg'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best');
+var W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,2);
+function resize(){W=window.innerWidth;H=window.innerHeight;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);}
+window.addEventListener('resize',resize);resize();
+var state=0,score=0,best=+(localStorage.getItem('cs_best')||0),cubes=[],orbs=[],px=0,py=0,z=0,spd=6,t=0,shake=0;
+bestEl.textContent='BEST '+best;
+function reset(){score=0;scoreEl.textContent=0;cubes=[];orbs=[];spd=6;z=0;px=0;py=0;}
+function spawn(){
+  if(Math.random()<.72){cubes.push({x:(Math.random()-.5)*2,y:(Math.random()-.5)*2,z:z+1400+Math.random()*600,s:40+Math.random()*70,rot:Math.random()*6,hue:Math.random()<.2?320:255});}
+  else{orbs.push({x:(Math.random()-.5)*2,y:(Math.random()-.5)*2,z:z+1400+Math.random()*500});}
+}
+function proj(X,Y,Z){var d=Math.max(1,Z-z),f=340/d;return{x:W/2+X*f*W*.5,y:H/2+Y*f*H*.5,f:f,d:d};}
+function loop(){
+  t++;ctx.fillStyle='rgba(4,6,12,.42)';ctx.fillRect(0,0,W,H);
+  if(state===1){
+    z+=spd;spd=6+Math.min(10,score/22);
+    if(t%26===0)spawn();
+    for(var i=cubes.length-1;i>=0;i--){var c=cubes[i];
+      if(c.z-z<-60){cubes.splice(i,1);score++;scoreEl.textContent=score;continue;}
+      var p=proj(c.x,c.y,c.z),s=c.s*p.f*2;
+      if(p.d>0&&p.d<220&&Math.abs(p.x-(W/2+px*W*.32))<s*.42+13&&Math.abs(p.y-(H/2+py*H*.32))<s*.42+13){die();}
+      if(p.f>.02){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(c.rot+t*.01);
+        ctx.strokeStyle='hsla('+c.hue+',100%,68%,'+Math.min(1,p.f*7)+')';ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=10*p.f*8;
+        ctx.lineWidth=Math.max(1,2.2*p.f*7);ctx.strokeRect(-s/2,-s/2,s,s);ctx.restore();ctx.shadowBlur=0;}}
+    for(var j=orbs.length-1;j>=0;j--){var o=orbs[j];
+      if(o.z-z<-60){orbs.splice(j,1);continue;}
+      var q=proj(o.x,o.y,o.z),r=Math.max(1.5,10*q.f*2);
+      if(q.d>0&&q.d<220&&Math.abs(q.x-(W/2+px*W*.32))<r+14&&Math.abs(q.y-(H/2+py*H*.32))<r+14){
+        orbs.splice(j,1);score+=5;scoreEl.textContent=score;shake=6;continue;}
+      if(q.f>.02){ctx.fillStyle='rgba(94,255,177,'+Math.min(1,q.f*7)+')';ctx.shadowColor='#5EFFB1';ctx.shadowBlur=14;
+        ctx.beginPath();ctx.arc(q.x,q.y,r,0,7);ctx.fill();ctx.shadowBlur=0;}}
+  }
+  // ship
+  if(shake>0){ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake-=.6;}
+  var sx=W/2+px*W*.32,sy=H/2+py*H*.32;
+  ctx.save();ctx.translate(sx,sy);ctx.rotate(px*.5);
+  ctx.strokeStyle='#4DE8FF';ctx.shadowColor='#4DE8FF';ctx.shadowBlur=16;ctx.lineWidth=2.4;
+  ctx.beginPath();ctx.moveTo(0,-16);ctx.lineTo(12,12);ctx.lineTo(0,6);ctx.lineTo(-12,12);ctx.closePath();ctx.stroke();ctx.restore();ctx.shadowBlur=0;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  requestAnimationFrame(loop);
+}
+function start(){if(state!==1){reset();state=1;msg.classList.add('hide');}}
+function die(){state=2;if(score>best){best=score;localStorage.setItem('cs_best',best);bestEl.textContent='BEST '+best;}
+  msg.innerHTML='<h1>DESTRUÍDO</h1><p>pontuação '+score+'</p><p style="color:#9D6BFF">TOQUE PARA REINICIAR</p>';msg.classList.remove('hide');}
+function moveTo(x,y){px=Math.max(-1,Math.min(1,(x/W-.5)*2.4));py=Math.max(-1,Math.min(1,(y/H-.5)*2.4));}
+cv.addEventListener('touchstart',function(e){e.preventDefault();if(state!==1)return start();moveTo(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+cv.addEventListener('touchmove',function(e){e.preventDefault();if(state===1)moveTo(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+cv.addEventListener('mousemove',function(e){if(state===1)moveTo(e.clientX,e.clientY);});
+window.addEventListener('keydown',function(e){if(state!==1){start();return;}
+  var s=.22;if(e.key==='ArrowLeft')px=Math.max(-1,px-s);if(e.key==='ArrowRight')px=Math.min(1,px+s);
+  if(e.key==='ArrowUp')py=Math.max(-1,py-s);if(e.key==='ArrowDown')py=Math.min(1,py+s);});
+document.addEventListener('visibilitychange',function(){if(document.hidden&&state===1)state=3;});
+loop();
+})();
+</script>
+</body>
+</html>

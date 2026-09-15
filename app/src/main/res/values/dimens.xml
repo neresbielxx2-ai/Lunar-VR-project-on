@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="pad_xs">4dp</dimen>
+    <dimen name="pad_s">8dp</dimen>
+    <dimen name="pad_m">16dp</dimen>
+    <dimen name="pad_l">24dp</dimen>
+    <dimen name="pad_xl">32dp</dimen>
+    <dimen name="radius_panel">24dp</dimen>
+    <dimen name="radius_card">18dp</dimen>
+    <dimen name="radius_button">14dp</dimen>
+    <dimen name="tile_w">150dp</dimen>
+    <dimen name="tile_h">150dp</dimen>
+    <dimen name="window_w">420dp</dimen>
+    <dimen name="window_h">300dp</dimen>
+    <dimen name="title_h">44dp</dimen>
+    <dimen name="text_display">28sp</dimen>
+    <dimen name="text_title">17sp</dimen>
+    <dimen name="text_body">13.5sp</dimen>
+    <dimen name="text_small">11sp</dimen>
+    <dimen name="text_mono">10.5sp</dimen>
+</resources>

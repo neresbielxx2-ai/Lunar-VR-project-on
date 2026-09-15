@@ -1,0 +1,127 @@
+{
+  "catalogVersion": 3,
+  "items": [
+    {
+      "id": "neon_drift",
+      "name": "Neon Drift",
+      "tagline": "Desvie dos pilares neon em velocidade crescente.",
+      "category": "Ação",
+      "type": "builtin_html",
+      "asset": "games/neon-drift.html",
+      "sizeLabel": "12 KB",
+      "accent": "#4DE8FF",
+      "author": "Agus VR Labs",
+      "license": "Original (MIT)"
+    },
+    {
+      "id": "astro_pong",
+      "name": "Astro Pong",
+      "tagline": "Pong espacial com trilhas de luz contra a IA.",
+      "category": "Arcade",
+      "type": "builtin_html",
+      "asset": "games/astro-pong.html",
+      "sizeLabel": "11 KB",
+      "accent": "#9D6BFF",
+      "author": "Agus VR Labs",
+      "license": "Original (MIT)"
+    },
+    {
+      "id": "cube_storm",
+      "name": "Cube Storm",
+      "tagline": "Voe por uma tempestade de cubos pseudo-3D.",
+      "category": "Ação",
+      "type": "builtin_html",
+      "asset": "games/cube-storm.html",
+      "sizeLabel": "13 KB",
+      "accent": "#5EFFB1",
+      "author": "Agus VR Labs",
+      "license": "Original (MIT)"
+    },
+    {
+      "id": "agus_sample_pack",
+      "name": "Agus Sample Pack 3D",
+      "tagline": "Cubo, esfera (GLB) e pirâmide (OBJ) para o Model Lab.",
+      "category": "Modelos 3D",
+      "type": "builtin_models",
+      "asset": "samples/",
+      "sizeLabel": "24 KB",
+      "accent": "#FFC24D",
+      "author": "Agus VR Labs",
+      "license": "Original (MIT)"
+    },
+    {
+      "id": "game_2048",
+      "name": "2048",
+      "tagline": "O clássico puzzle de números. Baixado do projeto oficial (MIT).",
+      "category": "Puzzle",
+      "type": "remote_zip",
+      "url": "https://github.com/gabrielecirulli/2048/archive/refs/heads/master.zip",
+      "entry": "index.html",
+      "sizeLabel": "~600 KB",
+      "accent": "#FFC24D",
+      "author": "Gabriele Cirulli",
+      "license": "MIT"
+    },
+    {
+      "id": "hexgl",
+      "name": "HexGL",
+      "tagline": "Corrida futurista WebGL (pesado — requer WebView moderno com GPU).",
+      "category": "Corrida",
+      "type": "remote_zip",
+      "url": "https://github.com/BKcore/HexGL/archive/refs/heads/master.zip",
+      "entry": "index.html",
+      "sizeLabel": "~30 MB",
+      "accent": "#FF5EC7",
+      "author": "BKcore",
+      "license": "MIT"
+    },
+    {
+      "id": "web_google",
+      "name": "Google",
+      "tagline": "Abre a busca do Google no Navegador Agus.",
+      "category": "Web",
+      "type": "web",
+      "url": "https://www.google.com",
+      "sizeLabel": "web",
+      "accent": "#4DE8FF",
+      "author": "Google",
+      "license": "Site externo"
+    },
+    {
+      "id": "web_threejs",
+      "name": "three.js examples",
+      "tagline": "Galeria oficial de exemplos WebGL do three.js.",
+      "category": "Web",
+      "type": "web",
+      "url": "https://threejs.org/examples/",
+      "sizeLabel": "web",
+      "accent": "#5EFFB1",
+      "author": "three.js",
+      "license": "Site externo"
+    },
+    {
+      "id": "web_aframe",
+      "name": "A-Frame examples",
+      "tagline": "Exemplos de WebVR/VR na web com A-Frame.",
+      "category": "Web",
+      "type": "web",
+      "url": "https://aframe.io/a-frame/examples/",
+      "sizeLabel": "web",
+      "accent": "#9D6BFF",
+      "author": "A-Frame",
+      "license": "Site externo"
+    },
+    {
+      "id": "web_wikipedia",
+      "name": "Wikipédia",
+      "tagline": "Enciclopédia livre no Navegador Agus.",
+      "category": "Web",
+      "type": "web",
+      "url": "https://pt.wikipedia.org",
+      "sizeLabel": "web",
+      "accent": "#A9B8D8",
+      "author": "Wikimedia",
+      "license": "Site externo"
+    }
+  ]
+}

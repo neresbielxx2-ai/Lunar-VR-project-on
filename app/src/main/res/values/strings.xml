@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Agus VR</string>
+    <string name="app_tagline">Sistema Espacial Android</string>
+
+    <!-- Splash / boot -->
+    <string name="boot_init">inicializando agus vr runtime…</string>
+    <string name="boot_caps">verificando capacidades do dispositivo…</string>
+    <string name="boot_camera">câmera traseira…</string>
+    <string name="boot_hand">hand tracking…</string>
+    <string name="boot_spatial">interface espacial…</string>
+    <string name="boot_ready">sistema pronto</string>
+
+    <!-- Shell -->
+    <string name="shell_enter_vr">INICIAR VR</string>
+    <string name="shell_status">STATUS DO SISTEMA</string>
+    <string name="shell_camera_ok">Câmera traseira disponível</string>
+    <string name="shell_camera_missing">Sem câmera traseira — VR usará ambiente virtual</string>
+    <string name="shell_hand_ok">Hand tracking pronto</string>
+    <string name="shell_hand_missing">Hand tracking indisponível — controle por toque ativo</string>
+    <string name="shell_sensors_ok">Sensores de movimento OK</string>
+    <string name="shell_sensors_missing">Sem giroscópio — paralaxe limitada</string>
+    <string name="shell_storage">Armazenamento AgusVR</string>
+    <string name="shell_about">Sobre</string>
+    <string name="shell_quick_settings">Ajustes rápidos</string>
+    <string name="shell_version_fmt">Agus VR v%1$s · runtime %2$s</string>
+
+    <!-- Camera permission -->
+    <string name="cam_perm_title">Permissão de câmera necessária</string>
+    <string name="cam_perm_body">O modo VR usa a CÂMERA TRASEIRA para mostrar o ambiente real atrás do aparelho. Para ativar:\n\n1. Toque em \"Abrir configurações\"\n2. Vá em Permissões → Câmera\n3. Marque \"Permitir\"\n4. Volte e toque em INICIAR VR novamente</string>
+    <string name="cam_perm_open_settings">Abrir configurações</string>
+    <string name="cam_perm_continue_without">Continuar sem câmera (ambiente virtual)</string>
+
+    <!-- VR HUD -->
+    <string name="vr_exit">SAIR</string>
+    <string name="vr_hand_on">MÃOS ATIVAS</string>
+    <string name="vr_hand_off">TOQUE</string>
+    <string name="vr_hand_searching">PROCURANDO MÃOS…</string>
+
+    <!-- Apps / tiles -->
+    <string name="app_library">Biblioteca</string>
+    <string name="app_store">Loja</string>
+    <string name="app_browser">Navegador</string>
+    <string name="app_files">Arquivos</string>
+    <string name="app_settings">Configurações</string>
+    <string name="app_performance">Performance</string>
+    <string name="app_handlab">Agus Hand Lab</string>
+    <string name="app_modellab">Agus Model Lab</string>
+    <string name="app_status">Agus Status</string>
+
+    <!-- Common actions -->
+    <string name="action_open">Abrir</string>
+    <string name="action_close">Fechar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_ok">OK</string>
+    <string name="action_rename">Renomear</string>
+    <string name="action_delete">Excluir</string>
+    <string name="action_copy">Copiar</string>
+    <string name="action_move">Mover</string>
+    <string name="action_info">Informações</string>
+    <string name="action_import">Importar</string>
+    <string name="action_install">Instalar</string>
+    <string name="action_installed">Instalado</string>
+    <string name="action_downloading">Baixando…</string>
+    <string name="action_change_cover">Alterar capa</string>
+    <string name="action_duplicate">Duplicar</string>
+    <string name="action_save">Salvar</string>
+    <string name="action_new_folder">Nova pasta</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_retry">Tentar novamente</string>
+
+    <!-- Store -->
+    <string name="store_title">AGUS STORE</string>
+    <string name="store_search_hint">Buscar na loja…</string>
+    <string name="store_add_url">Adicionar da internet</string>
+    <string name="store_import_local">Importar arquivo local</string>
+    <string name="store_url_dialog_title">Adicionar conteúdo da internet</string>
+    <string name="store_url_hint">https://exemplo.com/jogo.zip ou pagina.html</string>
+    <string name="store_cat_all">Tudo</string>
+
+    <!-- Library -->
+    <string name="library_title">Biblioteca</string>
+    <string name="library_empty">Biblioteca vazia.\nImporte HTML/ZIP pela Loja ou pelo botão Importar.</string>
+    <string name="library_tab_games">Jogos &amp; Apps</string>
+    <string name="library_tab_models">Modelos 3D</string>
+
+    <!-- Errors / toasts -->
+    <string name="err_format_unsupported">Formato não suportado pelo Agus VR.</string>
+    <string name="err_java_explain">Arquivos .java precisam de compilação e de um runtime JVM, que não estão disponíveis dentro do Agus VR. Exporte o projeto para Android Studio ou converta o conteúdo para HTML/WebApp para executá-lo aqui.</string>
+    <string name="err_apk_explain">O Agus VR não instala APKs de terceiros por segurança. Use o instalador do próprio Android para esse arquivo.</string>
+    <string name="err_download_failed">Erro ao baixar o arquivo</string>
+    <string name="err_zip_invalid">ZIP corrompido ou sem conteúdo HTML — nada foi importado.</string>
+    <string name="err_zip_no_html">O ZIP não contém nenhum HTML executável (index.html ou similar).</string>
+    <string name="err_import_failed">Falha ao importar o arquivo</string>
+    <string name="err_file_not_found">Arquivo não encontrado</string>
+    <string name="err_model_load">Não foi possível carregar o modelo 3D</string>
+    <string name="err_camera_init">Falha ao iniciar a câmera</string>
+
+    <string name="toast_download_done">Download concluído</string>
+    <string name="toast_added_library">Adicionado à biblioteca</string>
+    <string name="toast_model_imported">Modelo importado</string>
+    <string name="toast_open_error">Erro ao abrir arquivo</string>
+    <string name="toast_project_saved">Projeto salvo</string>
+    <string name="toast_deleted">Excluído</string>
+    <string name="toast_renamed">Renomeado</string>
+    <string name="toast_copied">Copiado</string>
+    <string name="toast_moved">Movido</string>
+
+    <!-- Settings -->
+    <string name="set_title">Configurações</string>
+    <string name="set_group_interaction">Interação</string>
+    <string name="set_group_visual">Visual</string>
+    <string name="set_group_tracking">Hand tracking</string>
+    <string name="set_group_system">Sistema</string>
+    <string name="set_distance">Distância da interface</string>
+    <string name="set_scale">Tamanho da interface</string>
+    <string name="set_sensitivity">Sensibilidade do apontamento</string>
+    <string name="set_select_dist">Distância de seleção</string>
+    <string name="set_dwell">Tempo de confirmação (ms)</string>
+    <string name="set_ray_intensity">Intensidade do ray</string>
+    <string name="set_ray_length">Comprimento do ray</string>
+    <string name="set_hand_enabled">Hand tracking ativo</string>
+    <string name="set_hand_delegate">Processamento (GPU/CPU)</string>
+    <string name="set_haptics">Vibração</string>
+    <string name="set_audio">Áudio da interface</string>
+    <string name="set_effects">Efeitos de brilho</string>
+    <string name="set_shadows">Sombras</string>
+    <string name="set_particles">Partículas do ambiente</string>
+    <string name="set_perf_mode">Modo de desempenho</string>
+    <string name="set_auto_quality">Ajuste automático de qualidade</string>
+    <string name="set_battery_saver">Economia de bateria</string>
+    <string name="set_camera_res">Resolução da câmera</string>
+    <string name="set_debug_overlay">Overlay de depuração</string>
+    <string name="set_reset">Restaurar padrões</string>
+    <string name="set_browser_home">Página inicial do navegador</string>
+
+    <!-- Performance -->
+    <string name="perf_title">Performance</string>
+    <string name="perf_mode_performance">Performance</string>
+    <string name="perf_mode_balanced">Balanced</string>
+    <string name="perf_mode_quality">Quality</string>
+    <string name="perf_fps">FPS</string>
+    <string name="perf_memory">Memória</string>
+    <string name="perf_battery">Bateria</string>
+    <string name="perf_temperature">Temperatura</string>
+    <string name="perf_cpu">Carga CPU (app)</string>
+    <string name="perf_hand_state">Hand tracking</string>
+    <string name="perf_auto_events">Ajustes automáticos</string>
+
+    <!-- Model lab -->
+    <string name="ml_title">AGUS MODEL LAB</string>
+    <string name="ml_import_model">Importar modelo</string>
+    <string name="ml_mode_orbit">Órbita</string>
+    <string name="ml_mode_move">Mover</string>
+    <string name="ml_mode_rotate">Girar</string>
+    <string name="ml_mode_scale">Escala</string>
+    <string name="ml_duplicate">Duplicar</string>
+    <string name="ml_delete">Excluir</string>
+    <string name="ml_project_save">Salvar projeto</string>
+    <string name="ml_project_load">Projetos</string>
+    <string name="ml_no_models">Nenhum modelo na cena.\nImporte OBJ, GLB ou GLTF.</string>
+    <string name="ml_supported">Formatos: .glb .gltf .obj</string>
+
+    <!-- Files -->
+    <string name="files_title">Arquivos</string>
+    <string name="files_zarchiver">Abrir com ZArchiver</string>
+    <string name="files_zarchiver_missing">ZArchiver não está instalado — usando o gerenciador do Agus VR.</string>
+    <string name="files_move_mode">Toque na pasta de destino</string>
+
+    <!-- Hand lab -->
+    <string name="hl_title">AGUS HAND LAB</string>
+    <string name="hl_tests">Testes de interação</string>
+    <string name="hl_t1">1 · Apontar (indicador)</string>
+    <string name="hl_t2">2 · Aproximar do alvo</string>
+    <string name="hl_t3">3 · Selecionar (dwell/pinch)</string>
+    <string name="hl_t4">4 · Grab (punho)</string>
+    <string name="hl_t5">5 · Mover objeto</string>
+    <string name="hl_t6">6 · Soltar (release)</string>
+    <string name="hl_t7">7 · Abrir menu por ray</string>
+
+    <!-- Browser -->
+    <string name="br_home">google.com</string>
+    <string name="br_url_hint">Digite um endereço…</string>
+
+    <!-- Dialogs -->
+    <string name="dlg_rename_title">Renomear</string>
+    <string name="dlg_confirm_delete_title">Excluir?</string>
+    <string name="dlg_confirm_delete_body">Esta ação não pode ser desfeita.</string>
+    <string name="dlg_not_supported_title">Formato não suportado</string>
+</resources>
