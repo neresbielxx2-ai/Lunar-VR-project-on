@@ -136,7 +136,7 @@ class HeadTracker3Dof(context: Context) : SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         val e = event ?: return
         if (e.values.size < 4) return
-        SensorManager.getQuaternionFromRotationVector(scratch, e.values)
+        quatFromRotationVector(e.values, scratch)
         // Android sensor quats rotate world→device; we want device orientation in world.
         synchronized(smoothed) {
             raw[0] = scratch[0]; raw[1] = scratch[1]; raw[2] = scratch[2]; raw[3] = scratch[3]
@@ -151,6 +151,16 @@ class HeadTracker3Dof(context: Context) : SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+
+    /** rotation vector = (axis·sin(θ/2), cos(θ/2)) → quaternion directly. */
+    private fun quatFromRotationVector(rv: FloatArray, out: FloatArray) {
+        val x = rv[0]; val y = rv[1]; val z = rv[2]
+        val s2 = x * x + y * y + z * z
+        val w = if (rv.size >= 4) rv[3]
+                else Math.sqrt(Math.max(0.0, 1.0 - s2.toDouble())).toFloat()
+        out[0] = x; out[1] = y; out[2] = z; out[3] = w
+        QMath.normalize(out)
+    }
 
     /**
      * Advances the smoothing filter for this frame and refreshes

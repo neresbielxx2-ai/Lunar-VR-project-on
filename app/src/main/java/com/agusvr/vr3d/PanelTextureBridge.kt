@@ -48,8 +48,8 @@ class PanelTextureBridge(
             .width(contentW)
             .height(contentH)
             .levels(1)
-            .format(Texture.InternalFormat.RGBA_8)
-            .usage(Texture.Usage.COLOR)
+            .format(Texture.InternalFormat.RGBA8)
+            .usage(Texture.Usage.UPLOADABLE or Texture.Usage.SAMPLEABLE)
             .build(engine)
         ensureBuffers()
     }
@@ -57,7 +57,7 @@ class PanelTextureBridge(
     private fun ensureBuffers() {
         if (bitmap?.width == contentW && bitmap?.height == contentH) return
         runCatching { bitmap?.recycle() }
-        bitmap = Bitmap.createBitmap(contentW, contentH, Bitmap.Config.ARGD_8888)
+        bitmap = Bitmap.createBitmap(contentW, contentH, Bitmap.Config.ARGB_8888)
         canvas = Canvas(bitmap!!)
         pixels = ByteBuffer.allocateDirect(contentW * contentH * 4).order(ByteOrder.nativeOrder())
     }

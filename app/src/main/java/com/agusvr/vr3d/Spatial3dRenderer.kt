@@ -135,16 +135,16 @@ class Spatial3dRenderer(
 
         val helper = UiHelper(UiHelper.ContextErrorPolicy.DONT_CHECK)
         helper.renderCallback = object : UiHelper.RendererCallback {
-            override fun onNativeWindowChanged(helper: UiHelper, surface: Any) {
+            override fun onNativeWindowChanged(surface: android.view.Surface) {
                 engine?.let { e -> swapChain?.let { e.destroySwapChain(it) } }
                 createSwapChain(surface)
             }
-            override fun onDetachedFromSurface(helper: UiHelper) {
+            override fun onDetachedFromSurface() {
                 engine?.let { e -> swapChain?.let { e.destroySwapChain(it) } }
                 swapChain = null
                 ready = false
             }
-            override fun onResized(helper: UiHelper, w: Int, h: Int) {
+            override fun onResized(w: Int, h: Int) {
                 vpW = w; vpH = h
                 configureViews()
             }
@@ -261,7 +261,7 @@ class Spatial3dRenderer(
         // camera rig = 3DOF orientation only (no translation ever)
         QMath.toMatrix(tracker.rigQuaternion, rigMat)
         applyCameraTransforms()
-        if (!r.beginFrame(sc)) return
+        if (!r.beginFrame(sc, System.nanoTime())) return
         when (mode) {
             Mode.MONO -> viewMono?.let { r.render(it) }
             Mode.SBS -> {

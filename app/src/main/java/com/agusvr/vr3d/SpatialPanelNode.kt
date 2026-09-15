@@ -2,6 +2,7 @@ package com.agusvr.vr3d
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.RadialGradient
 import android.graphics.Shader
 import android.opengl.Matrix
@@ -30,7 +31,7 @@ class PanelMaterialLibrary(private val engine: Engine) {
             .shading(MaterialBuilder.Shading.UNLIT)
             .blending(MaterialBuilder.BlendingMode.TRANSPARENT)
             .doubleSided(true)
-            .require(VertexAttribute.UV0)
+            .require(MaterialBuilder.VertexAttribute.UV0)
             .samplerParameter(
                 MaterialBuilder.SamplerType.SAMPLER_2D,
                 MaterialBuilder.SamplerFormat.FLOAT,
@@ -64,7 +65,7 @@ class PanelMaterialLibrary(private val engine: Engine) {
         val n = 128
         val bmp = Bitmap.createBitmap(n, n, Bitmap.Config.ARGB_8888)
         val c = android.graphics.Canvas(bmp)
-        val p = android.graphics.Paint(Paint.ANTI_ALIAS_FLAG)
+        val p = Paint(Paint.ANTI_ALIAS_FLAG)
         p.shader = RadialGradient(n / 2f, n / 2f, n / 2f,
             Color.argb(120, 0, 0, 0), Color.TRANSPARENT, Shader.TileMode.CLAMP)
         c.drawRect(0f, 0f, n.toFloat(), n.toFloat(), p)
@@ -72,7 +73,8 @@ class PanelMaterialLibrary(private val engine: Engine) {
         bmp.copyPixelsToBuffer(buf)
         buf.rewind()
         val tex = Texture.Builder().width(n).height(n).levels(1)
-            .format(Texture.InternalFormat.RGBA_8).usage(Texture.Usage.COLOR).build(engine)
+            .format(Texture.InternalFormat.RGBA8)
+            .usage(Texture.Usage.UPLOADABLE or Texture.Usage.SAMPLEABLE).build(engine)
         tex.setImage(engine, 0, Texture.PixelBufferDescriptor(buf, Texture.Format.RGBA, Texture.Type.UBYTE))
         bmp.recycle()
         tex
@@ -184,7 +186,7 @@ class SpatialPanelNode(
         val rmb = RenderableManager.Builder(panelEntity)
             .geometry(0, RenderableManager.PrimitiveType.TRIANGLES, vb, ib)
         panelInstance?.let { rmb.material(0, it) }
-        rmb.build(engine)
+        rmb.build(engine, panelEntity)
 
         // shadow quad (flat, slightly behind)
         val (sverts, sidx) = flatGrid(widthM * 1.22f, heightM * 1.30f)
@@ -205,7 +207,7 @@ class SpatialPanelNode(
         val smb = RenderableManager.Builder(shadowEntity)
             .geometry(0, RenderableManager.PrimitiveType.TRIANGLES, shadowVb, shadowIb)
         shadowInstance?.let { smb.material(0, it) }
-        smb.build(engine)
+        smb.build(engine, shadowEntity)
 
         updateTransform()
     }
